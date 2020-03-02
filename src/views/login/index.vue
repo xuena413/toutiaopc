@@ -7,21 +7,21 @@
           <img src="../../assets/img/logo_index.png" alt="">
       </div>
       <!-- 表单 -->
-      <el-form>
+      <el-form :model="loginForm" :rules="loginRules">
           <!-- 表单容器 -->
-          <el-form-item>
+          <el-form-item prop="mobile">
               <!-- 表单域 -->
-            <el-input placeholder="请输入手机号"></el-input>
+            <el-input placeholder="请输入手机号" v-model="loginForm.mobile"></el-input>
           </el-form-item>
-            <el-form-item>
+            <el-form-item prop="code">
               <!-- 表单域2-->
-            <el-input style="width:60%" placeholder="验证码" class="yanzheng"></el-input>
+            <el-input style="width:60%" placeholder="验证码" class="yanzheng" v-model="loginForm.code"></el-input>
              <el-button style="width:35% ;float:right" plain>验证码</el-button>
           </el-form-item>
            <el-form-item style="margin:10px 0">
-                <el-checkbox v-model="checked" style="color:#FFF">同意阅读同意用户协议和隐私条款</el-checkbox>
+                <el-checkbox  style="color:#FFF" v-model="loginForm.checked">同意阅读同意用户协议和隐私条款</el-checkbox>
           </el-form-item>
-            <el-form-item>
+            <el-form-item prop="checked">
                 <el-button type="primary" style="width:100%" @click="jump">登录</el-button>
           </el-form-item>
       </el-form>
@@ -34,7 +34,16 @@
 export default {
   data () {
     return {
-      checked: true
+      // checked: true
+      // 1.登录表单的数据准备
+      loginForm: {
+        mobile: '',
+        code: '',
+        checked: false
+      },
+      loginRules: {
+
+      }
 
     }
   },
