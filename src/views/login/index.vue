@@ -22,7 +22,7 @@
                 <el-checkbox v-model="checked" style="color:#FFF">同意阅读同意用户协议和隐私条款</el-checkbox>
           </el-form-item>
             <el-form-item>
-                <el-button type="primary" style="width:100%" >登录</el-button>
+                <el-button type="primary" style="width:100%" @click="jump">登录</el-button>
           </el-form-item>
       </el-form>
       </el-card>
@@ -30,7 +30,19 @@
 </template>
 
 <script>
+
 export default {
+  data () {
+    return {
+      checked: true
+
+    }
+  },
+  methods: {
+    jump () {
+      this.$router.push('/home')
+    }
+  }
 
 }
 </script>
