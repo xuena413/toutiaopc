@@ -42,14 +42,52 @@ export default {
         checked: false
       },
       loginRules: {
+        mobile: [{ required: true, message: '您的手机号不能为空' },
+          {
+            pattern: /^1[3-9]\d{9}$/,
+            message: '你的手机号格式不正确'
+          }],
+        code: [{ required: true, message: '您的验证码不能为空' },
+          { pattern: /^\d{6}$/, message: '验证码为6位数字' }],
 
+        checked: [{
+        // rule:当前的校验规则
+        // value：当前要校验的字段的值
+        // callback是一个回调函数，不论成功还是失败都要调用
+          validator: function (rule, value, callback) {
+            value ? callback() : callback(new Error('您必须同意我们的条约'))
+          }
+        }]
       }
-
     }
   },
   methods: {
     jump () {
-      this.$router.push('/home')
+      // this.$router.push('/home')
+      // 方式1：回调函数
+      // this.$refs.loginForm.validate(function (isOK) {
+      //   if (isOK) {
+      //     console.log('校验通过')
+      //   } else {
+      //     console.log('校验未通过')
+      //   }
+      // })
+      // 方式2 promise
+      this.$refs.loginForm.validate().then(() => {
+        // 校验通过会执行then后面的语句
+        // console.log(111)
+        // this.$axios.get/post/delete/put
+        this.$axios({
+          url: '/authorizations',
+          data: this.loginForm,
+          method: 'post'
+        }).then(result => {
+          window.localStorage.aetItem('user-token', result.data.data.token)
+          this.$router.push('/home')
+        }).catch(() => {
+          this.message.error('用户名或者密码错误')
+        })
+      })
     }
   }
 
