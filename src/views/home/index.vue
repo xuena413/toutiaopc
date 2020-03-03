@@ -1,11 +1,17 @@
 <template>
   <el-container>
-    <el-aside style="background-color:pink">
-         <h1>左侧导航区域</h1>
+    <el-aside >
+         <!-- <h1>左侧导航区域</h1> -->
+         <layout-aside>
+
+         </layout-aside>
     </el-aside>
     <el-container>
       <el-header>
-         <h1>顶部操作栏</h1>
+         <!-- <h1>顶部操作栏</h1> -->
+         <layout-header>
+顶部操作栏
+         </layout-header>
       </el-header>
       <el-main>
          <h1>主要区域</h1>
@@ -16,7 +22,14 @@
 </template>
 
 <script>
+// 引入左侧导航
+// import LayoutAside from '@/components/home/layout-aside'
+// import LayoutHeader from '@/components/home/layout-header'
 export default {
+  // components: {
+  //   'layout-aside': LayoutAside,
+  //   'layout-header': LayoutHeader
+  // }
 
 }
 </script>

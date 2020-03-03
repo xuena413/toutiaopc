@@ -7,7 +7,7 @@
           <img src="../../assets/img/logo_index.png" alt="">
       </div>
       <!-- 表单 -->
-      <el-form :model="loginForm" :rules="loginRules">
+      <el-form ref="loginForm" :model="loginForm" :rules="loginRules">
           <!-- 表单容器 -->
           <el-form-item prop="mobile">
               <!-- 表单域 -->
@@ -18,10 +18,10 @@
             <el-input style="width:60%" placeholder="验证码" class="yanzheng" v-model="loginForm.code"></el-input>
              <el-button style="width:35% ;float:right" plain>验证码</el-button>
           </el-form-item>
-           <el-form-item style="margin:10px 0">
+           <el-form-item style="margin:25px 0"  prop="checked">
                 <el-checkbox  style="color:#FFF" v-model="loginForm.checked">同意阅读同意用户协议和隐私条款</el-checkbox>
           </el-form-item>
-            <el-form-item prop="checked">
+            <el-form-item>
                 <el-button type="primary" style="width:100%" @click="jump">登录</el-button>
           </el-form-item>
       </el-form>
@@ -47,8 +47,7 @@ export default {
             pattern: /^1[3-9]\d{9}$/,
             message: '你的手机号格式不正确'
           }],
-        code: [{ required: true, message: '您的验证码不能为空' },
-          { pattern: /^\d{6}$/, message: '验证码为6位数字' }],
+        code: [{ required: true, message: '您的验证码不能为空' }, { pattern: /^\d{6}$/, message: '验证码为6位数字' }],
 
         checked: [{
         // rule:当前的校验规则
@@ -73,6 +72,7 @@ export default {
       //   }
       // })
       // 方式2 promise
+      console.log(this.$refs.loginForm)
       this.$refs.loginForm.validate().then(() => {
         // 校验通过会执行then后面的语句
         // console.log(111)
@@ -82,7 +82,7 @@ export default {
           data: this.loginForm,
           method: 'post'
         }).then(result => {
-          window.localStorage.aetItem('user-token', result.data.data.token)
+          window.localStorage.setItem('user-token', result.data.data.token)
           this.$router.push('/home')
         }).catch(() => {
           this.message.error('用户名或者密码错误')
