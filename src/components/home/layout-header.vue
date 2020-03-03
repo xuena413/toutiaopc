@@ -9,16 +9,14 @@
   <el-col :span='12' class="right">
       <el-row type="flex" justify="end" align="middel">
           <img :src="userInfo.photo" alt="">
-    <el-dropdown trigger="click">
+    <el-dropdown trigger="click" @command="clickMenu">
   <span class="name">
   {{userInfo.name}}
   </span>
   <el-dropdown-menu slot="dropdown" align="middel" >
-    <el-dropdown-item>黄金糕</el-dropdown-item>
-    <el-dropdown-item>狮子头</el-dropdown-item>
-    <el-dropdown-item>螺蛳粉</el-dropdown-item>
-    <el-dropdown-item disabled>双皮奶</el-dropdown-item>
-    <el-dropdown-item divided>蚵仔煎</el-dropdown-item>
+    <el-dropdown-item command="info">个人信息</el-dropdown-item>
+    <el-dropdown-item command="git">git地址</el-dropdown-item>
+    <el-dropdown-item command="lgout">退出</el-dropdown-item>
   </el-dropdown-menu>
 </el-dropdown>
     </el-row>
@@ -30,10 +28,23 @@
 <script>
 export default {
 
-  // 定义一个对象接收数据    获取数据显示数据
+  // 定义一个对象接收数据    获取数据显示数据 钩子函数+v-bind绑定
   data () {
     return {
       userInfo: { }
+    }
+  },
+  methods: {
+    clickMenu (command) {
+    //   alert(111 + command)
+      if (command === 'info') {
+        // 点击个人信息
+      } else if (command === 'git') {
+        window.location.href = 'https://github.com/shuiruohanyu/94-heimatoutiaopc'
+      } else {
+        window.localStorage.removeItem('user-token')
+        this.$router.push('/login')
+      }
     }
   },
   created () {
@@ -57,7 +68,7 @@ export default {
 
 .Layout-header{
     height: 60px;
-    background-color: pink;
+    // background-color: pink;
     .left{
         i{
             font-size: 20px;

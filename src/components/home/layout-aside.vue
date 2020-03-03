@@ -3,7 +3,8 @@
    <div class="title">
       <img src="../../assets/img/logo_admin.png" alt="">
    </div>
-      <el-menu  background-color="#323745" text-color="#adafb5">
+   <!-- 第一步：开启路由模式 :router="true"-->
+      <el-menu router background-color="#323745" text-color="#adafb5">
         <el-menu-item index="1">
         <i class="el-icon-s-home"></i>
         <span slot="title">首页</span>
