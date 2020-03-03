@@ -5,10 +5,11 @@
    </div>
    <!-- 第一步：开启路由模式 :router="true"-->
       <el-menu router background-color="#323745" text-color="#adafb5">
-        <el-menu-item index="1">
+        <el-menu-item index="/home">
         <i class="el-icon-s-home"></i>
         <span slot="title">首页</span>
       </el-menu-item>
+     <!-- 第二步： 需要给菜单项配置index-->
         <!-- 二级菜单 -->
           <!-- 两个给同一个具名插槽 -->
       <el-submenu index="2">
@@ -17,10 +18,10 @@
           <span>内容管理</span>
         </template>
 
-          <el-menu-item>发布文章</el-menu-item>
-          <el-menu-item>内容列表</el-menu-item>
-          <el-menu-item>评论列表</el-menu-item>
-           <el-menu-item>素材管理</el-menu-item>
+           <el-menu-item index='/home/publish'>发布文章</el-menu-item>
+             <el-menu-item index='/home/articles'>内容列表</el-menu-item>
+             <el-menu-item index='/home/comment'>评论列表</el-menu-item>
+             <el-menu-item index='/home/material'>素材管理</el-menu-item>
       </el-submenu>
 
        <el-submenu index="3">
@@ -29,15 +30,17 @@
           <span>粉丝管理</span>
         </template>
 
-          <el-menu-item>图文数据</el-menu-item>
-          <el-menu-item>粉丝概况</el-menu-item>
-          <el-menu-item>粉丝画像</el-menu-item>
-          <el-menu-item>粉丝列表</el-menu-item>
+          <!-- 二级菜单项 还是使用el-menu-item -->
+             <el-menu-item index='/home/picture'>图文数据</el-menu-item>
+             <el-menu-item index='/home/fansinfo'>粉丝概况</el-menu-item>
+             <el-menu-item index='/home/fansphoto'>粉丝画像</el-menu-item>
+             <el-menu-item index='/home/fanslist'>粉丝列表</el-menu-item>
+
       </el-submenu>
 
             <!-- 插槽 slot-->
 
-       <el-menu-item index="4">
+       <el-menu-item index='/home/account'>
         <i class="el-icon-user-solid"></i>
         <span slot="title">账户信息</span>
       </el-menu-item>
@@ -70,6 +73,7 @@ export default {
 .el-menu{
 border-right:none;
 }
+
 }
 
 </style>

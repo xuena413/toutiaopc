@@ -14,7 +14,7 @@
          </layout-header>
       </el-header>
       <el-main>
-         <h1>主要区域</h1>
+         <!-- <h1>主要区域</h1> -->
           <router-view></router-view>
       </el-main>
     </el-container>
