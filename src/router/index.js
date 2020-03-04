@@ -20,10 +20,17 @@ const routes = [
     name: 'Home',
     component: Home,
     // 配置二级路由
-    children: [{
-      path: '', // 什么都不写代表默认组件
-      component: SecondHome
-    }]
+    children: [
+      {
+        path: '', // 什么都不写代表默认组件
+        component: SecondHome
+      }, {
+        // path: '/home/comment', //评论列表地址
+        // 简写
+        path: 'comment',
+        component: () => import('@/views/comment')// 组件
+      }
+    ]
   }, { // 使用
     path: '/login',
     name: 'login',
