@@ -15,9 +15,9 @@ export default {
   data () {
     return {
       list: [
-        'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1583344299440&di=a18fb1eb2471398b2821a808eaec7200&imgtype=0&src=http%3A%2F%2Fimage.biaobaiju.com%2Fuploads%2F20180211%2F01%2F1518283330-lGzqShHxDA.jpg',
-        'http://img4.imgtn.bdimg.com/it/u=2802527010,4286707352&fm=26&gp=0.jpg',
-        'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=472684110,560557193&fm=26&gp=0.jpg']
+        'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=189058891,1491055887&fm=26&gp=0.jpg',
+        'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2355332879,4115290422&fm=26&gp=0.jpg',
+        'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=2171073523,1991282945&fm=26&gp=0.jpg']
     }
   }
 

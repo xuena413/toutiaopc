@@ -48,16 +48,16 @@ export default {
     }
   },
   created () {
-    const token = localStorage.getItem('user-token')
+    // const token = localStorage.getItem('user-token')
     // 获取用户的个人信息
     this.$axios({
-      url: 'user/profile', // 请求地址
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
+      url: 'user/profile' // 请求地址
+      // headers: {
+      //   Authorization: `Bearer ${token}`
+      // }
     }).then(result => {
       // debugger
-      this.userInfo = result.data.data
+      this.userInfo = result.data
     })
   }
 
