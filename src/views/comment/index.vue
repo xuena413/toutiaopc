@@ -17,9 +17,15 @@
         <el-table-column prop="total_comment_count" label="总评论数"></el-table-column>
         <el-table-column prop="fans_comment_count" label="粉丝评论数"></el-table-column>
         <el-table-column label="操作">
+          <!-- 3.4 最后一点 作用域插槽    自定义列模板  传出slot-scope-->
+          <!-- el-table-column 在插槽中传出了 row $index store column -->
           <!-- 可以放组件 -->
+          <template slot-scope="obj">
+          <!-- 3.4.1给按钮注册事件 -->
           <el-button type=text size='small'>修改</el-button>
-            <el-button type=text size='small'>关闭评论</el-button>
+          <!-- 根据评论状态决定其打开关闭 -->
+            <el-button @click="openOrClose(obj.row)" size='small'>{{obj.row.comment_status?'close':'open'}}评论</el-button>
+            </template>
         </el-table-column>
       </el-table>
   </el-card>
@@ -70,6 +76,33 @@ export default {
       // ------------------------- 第2步
       // return '1111'
       return cellValue ? 'nomal' : 'close'
+    },
+    openOrClose (row) {
+      const mess = row.comment_status ? '关闭' : '打开'
+      // 3.1.2$confirm支持promise 点击确定会进入then，点击取消会进入到catch
+      this.$confirm(`是否决定${mess}评论状态`, '提示').then(() => {
+        this.$axios({
+          url: '/comments/status', // 请求地址
+          method: 'put',
+          params: {
+            article_id: row.id
+          },
+          data: {
+            // body参数
+            // allow_comment:    打开与关闭  此状态和评论的状态相反
+            allow_comment: !row.comment_status
+          }
+        }).then(() => {
+          // 成功 =》提示消息，重新拉取数据
+          this.$message.success(`${mess}成功`)
+          // 重新拉取数据
+          this.getComment()
+        }).catch(() => {
+          // 失败
+          this.$message.error(`${mess}失败`)
+          // 改变状态时间 受到id的大数字问题影响
+        })
+      })
     }
   },
 
