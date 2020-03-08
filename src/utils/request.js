@@ -1,5 +1,18 @@
 import axios from 'axios'
 import router from '@/router'
+
+import JSONBig from 'json-bigint' // 引入第三方处理大数字的包
+// 在axios的返回数据进行自定义处理，用json-bigint替代原来的json
+axios.defaults.transformResponse = [function (data) {
+  // const result = JSON.parse(data)
+  // return result
+
+  // 用大数字技术做
+  // const result = JSONBig.parse(data)
+  // return result
+
+  return data ? JSONBig.parse(data) : {}
+}]
 // 等同于this.$router 组件上面用
 axios.defaults.baseURL = 'http://ttapi.research.itcast.cn/mp/v1_0'
 // 对所有的接口进行请求注入

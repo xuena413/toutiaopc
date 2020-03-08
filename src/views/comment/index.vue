@@ -85,7 +85,7 @@ export default {
           url: '/comments/status', // 请求地址
           method: 'put',
           params: {
-            article_id: row.id
+            article_id: row.id.toString() // 最后一步将大数字转化为字符串
           },
           data: {
             // body参数
