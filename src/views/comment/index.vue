@@ -1,6 +1,6 @@
 <template>
   <!-- <div>评论页面</div> -->
-  <el-card>
+  <el-card v-loading="loading">
       <!-- bread-crumb本身也有插槽 header是头部-->
       <bread-crumb slot="header">
       <!-- slot=title 表示评论管理给面包屑的chacao -->
@@ -28,6 +28,21 @@
             </template>
         </el-table-column>
       </el-table>
+
+      <!-- 加分页功能 -->
+      <!-- 前按钮 页码 后按钮 -->
+      <el-row style="height:80px" type='flex' align="middle" justify="center">
+          <el-pagination
+      :background="true"
+    layout="prev, pager, next"
+    :total="page.total"
+    :current-page="page.currentPage"
+    :page-size="page.pageSize"
+@current-change=" changePage"
+    >
+  </el-pagination>
+      </el-row>
+
   </el-card>
 </template>
 
@@ -48,22 +63,41 @@
 export default {
   data () {
     return {
-      list: []
+      // 分页组件的数据单独放置一个对象中
+      page: {
+        total: 0, // 默认0
+        currentPage: 10,
+        pageSize: 10
+        // 决定页码的数量
+      },
+      list: [],
+      loading: false
     }
   },
   methods: {
+    changePage (nowPage) {
+      // alert(nowPage)
+      this.page.currentPage = nowPage
+      this.getComment()
+    },
     getComment () {
+      this.loading = true
       this.$axios({
         url: '/articles',
         // query是专门传get参数也就get参数get=> params
         // data传body参数也就是请求体参数post=>data
         params: {
-          response_type: 'comment'
+          response_type: 'comment',
+          page: this.page.currentPage,
+          per_page: this.page.pageSize
+
         }
 
       }).then(result => {
-        console.log(result)
+        // console.log(result)
         this.list = result.data.results
+        this.page.total = result.data.total_count // 将总数赋值
+        this.loading = false
       })
     },
     formatterBool (row, column, cellValue, index) {
