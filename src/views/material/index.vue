@@ -7,7 +7,7 @@
       </template>
       </bread-crumb>
 <!-- {{activeName}} -->
- <el-tabs v-model="activeName" type="border-card">
+ <el-tabs v-model="activeName" type="border-card" @tab-click="changeTab">
    <el-tab-pane label="全部素材" name='all'>
        <!-- 内容循环生成页面结构 -->
    <div class="img-list">
@@ -22,8 +22,26 @@
        </el-card>
    </div>
    </el-tab-pane>
-  <el-tab-pane label="收藏素材" name='collect'>收藏素材</el-tab-pane>
+  <el-tab-pane label="收藏素材" name='collect'>
+      <div class="img-list">
+       <!-- 采用v-for对list数据进行循环 -->
+       <el-card class="img-card" v-for="item in list" :key="item.id">
+           <!-- 放置图片 并且赋值 图片地址 -->
+           <img :src="item.url" alt="">
+
+       </el-card>
+   </div>
+  </el-tab-pane>
 </el-tabs>
+<el-row type="flex" justify="center" style=" height:80px" align="middel">
+<el-pagination background
+:total="page.total"
+:current-page="page.currentaPage"
+:page-size="page.pageSize"
+layout="prev,pager,next"
+>
+</el-pagination>
+</el-row>
   </el-card>
 </template>
 
@@ -33,7 +51,14 @@ export default {
     return {
       activeName: 'collect',
       //   定义list接收全部素材的数据
-      list: []
+      list: [],
+      //   存放分页信息
+      page: {
+
+        currentPage: 1,
+        total: 0,
+        pageSize: 8
+      }
     }
   },
   methods: {
@@ -42,7 +67,9 @@ export default {
         url: '/user/images',
         method: 'get',
         params: {
-          collect: false // 获取全部数据（因为collect为false为全部数据）
+        //   collect: false // 获取全部数据（因为collect为false为全部数据）
+          // this.activeName === 'collect'成立就true，获取收藏 、反之是false获取全部
+          collect: this.activeName === 'collect'
         }, // get参数 也就是query参数
         data: {// data参数，也就是body参数
 
@@ -52,6 +79,12 @@ export default {
         // 返回的数据赋值到data中
         this.list = result.data.results
       })
+    },
+    changeTab () {
+      // 切换事件中
+    //   alert(this.activeName)
+    // 根据activeName决定获取啥
+      this.getMaterial() // 直接调用获取素材的方法
     }
   },
   //   钩子函数中调用
