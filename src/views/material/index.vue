@@ -39,6 +39,7 @@
 :current-page="page.currentaPage"
 :page-size="page.pageSize"
 layout="prev,pager,next"
+@current-change="changePage"
 >
 </el-pagination>
 </el-row>
@@ -62,6 +63,10 @@ export default {
     }
   },
   methods: {
+    changePage (newPage) {
+      this.page.currentPage = newPage
+      this.getMaterial()
+    },
     getMaterial () {
       this.$axios({
         url: '/user/images',
@@ -69,7 +74,9 @@ export default {
         params: {
         //   collect: false // 获取全部数据（因为collect为false为全部数据）
           // this.activeName === 'collect'成立就true，获取收藏 、反之是false获取全部
-          collect: this.activeName === 'collect'
+          collect: this.activeName === 'collect',
+          page: this.page.currentPage,
+          per_page: this.page.pageSize
         }, // get参数 也就是query参数
         data: {// data参数，也就是body参数
 
@@ -78,12 +85,14 @@ export default {
         // debugger
         // 返回的数据赋值到data中
         this.list = result.data.results
+        this.page.total = result.data.total_count // 根据页签变化而变化
       })
     },
     changeTab () {
+      this.page.currentPage = 1
       // 切换事件中
-    //   alert(this.activeName)
-    // 根据activeName决定获取啥
+      //   alert(this.activeName)
+      // 根据activeName决定获取啥
       this.getMaterial() // 直接调用获取素材的方法
     }
   },
