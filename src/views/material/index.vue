@@ -5,7 +5,15 @@
       <template slot="title">
           素材管理
       </template>
+      <!-- 上传图片 -->
+
       </bread-crumb>
+      <el-row type="flex" justify="end" style="margin-bottom:15px">
+          <el-upload action="" :http-request="uploadImg">
+      <el-button size="small" type="primary">点击上传</el-button>
+      </el-upload>
+      </el-row>
+
 <!-- {{activeName}} -->
  <el-tabs v-model="activeName" type="border-card" @tab-click="changeTab">
    <el-tab-pane label="全部素材" name='all'>
@@ -63,6 +71,22 @@ export default {
     }
   },
   methods: {
+    //   上传
+    uploadImg (params) {
+      const data = new FormData()
+      console.log(params)
+      data.append('image', params.file)
+
+      this.$axios({
+        url: '/user/images',
+        method: 'post',
+        data
+      }).then(() => {
+        this.$message.success('上传成功')
+      }).catch(() => {
+        this.$message.error('上传失败')
+      })
+    },
     changePage (newPage) {
       this.page.currentPage = newPage
       this.getMaterial()
