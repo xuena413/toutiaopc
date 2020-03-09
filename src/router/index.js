@@ -35,6 +35,11 @@ const routes = [
         path: 'material',
         // 按需加载
         component: () => import('@/views/material')
+      }, {
+
+        path: '/home/articles',
+        // 按需加载
+        component: () => import('@/views/articles')
       }
     ]
   }, { // 使用
