@@ -22,7 +22,7 @@
        <!-- 采用v-for对list数据进行循环 -->
        <el-card class="img-card" v-for="item in list" :key="item.id">
            <!-- 放置图片 并且赋值 图片地址 -->
-           <img :src="item.url" alt="">
+           <img :src="item.url" alt="" @click="dialogVisible=true">
            <el-row class="operate" type="flex"  align="middle" justify="space-around">
            <!-- 3.7为收藏按钮和删除按钮增加事件  -->
 
@@ -37,7 +37,7 @@
        <!-- 采用v-for对list数据进行循环 -->
        <el-card class="img-card" v-for="item in list" :key="item.id">
            <!-- 放置图片 并且赋值 图片地址 -->
-           <img :src="item.url" alt="">
+           <img :src="item.url" alt="" @click="dialogVisible=true">
 
        </el-card>
    </div>
@@ -53,6 +53,17 @@ layout="prev,pager,next"
 >
 </el-pagination>
 </el-row>
+<!-- 3.7为了制造弹层  通过visible属性进行true false设置-->
+<el-dialog :visible="dialogVisible" @close="dialogVisible=false">
+  <!-- 放置一个走马灯组件 -->
+ <el-carousel indicator-position="outside" height="400px">
+   <!-- 放置幻灯片的循环项  循环当前页的list-->
+    <el-carousel-item v-for="item in list" :key="item.id">
+      <!-- <h3>{{ item }}</h3> -->
+      <img style="width:100%;" :src="item.url" alt="">
+    </el-carousel-item>
+  </el-carousel>
+</el-dialog>
   </el-card>
 </template>
 
@@ -69,7 +80,8 @@ export default {
         currentPage: 1,
         total: 0,
         pageSize: 8
-      }
+      },
+      dialogVisible: false
     }
   },
   methods: {
