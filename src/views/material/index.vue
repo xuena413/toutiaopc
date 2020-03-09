@@ -19,10 +19,11 @@
    <el-tab-pane label="全部素材" name='all'>
        <!-- 内容循环生成页面结构 -->
    <div class="img-list">
-       <!-- 采用v-for对list数据进行循环 -->
-       <el-card class="img-card" v-for="item in list" :key="item.id">
+       <!-- 采用v-for对list数据进行循环  走马灯时间加的index -->
+       <el-card class="img-card" v-for="(item,index) in list" :key="item.id">
            <!-- 放置图片 并且赋值 图片地址 -->
-           <img :src="item.url" alt="" @click="dialogVisible=true">
+           <!-- <img :src="item.url" alt="" @click="dialogVisible=true"> -->
+            <img :src="item.url" alt="" @click="selectImg(index)">
            <el-row class="operate" type="flex"  align="middle" justify="space-around">
            <!-- 3.7为收藏按钮和删除按钮增加事件  -->
 
@@ -34,10 +35,10 @@
    </el-tab-pane>
   <el-tab-pane label="收藏素材" name='collect'>
       <div class="img-list">
-       <!-- 采用v-for对list数据进行循环 -->
-       <el-card class="img-card" v-for="item in list" :key="item.id">
+       <!-- 采用v-for对list数据进行循环   走马灯需要给v-for中加index -->
+       <el-card class="img-card" v-for="(item,index) in list" :key="item.id">
            <!-- 放置图片 并且赋值 图片地址 -->
-           <img :src="item.url" alt="" @click="dialogVisible=true">
+           <img :src="item.url" alt="" @click="selectImg(index)">
 
        </el-card>
    </div>
@@ -54,9 +55,10 @@ layout="prev,pager,next"
 </el-pagination>
 </el-row>
 <!-- 3.7为了制造弹层  通过visible属性进行true false设置-->
-<el-dialog :visible="dialogVisible" @close="dialogVisible=false">
+<el-dialog opened="openEnd" :visible="dialogVisible" @close="dialogVisible=false">
   <!-- 放置一个走马灯组件 -->
- <el-carousel indicator-position="outside" height="400px">
+  <!-- ref可以获取组件实例 -->
+ <el-carousel ref="myCarousel" indicator-position="outside" height="400px" >
    <!-- 放置幻灯片的循环项  循环当前页的list-->
     <el-carousel-item v-for="item in list" :key="item.id">
       <!-- <h3>{{ item }}</h3> -->
@@ -81,10 +83,21 @@ export default {
         total: 0,
         pageSize: 8
       },
-      dialogVisible: false
+      dialogVisible: false, // 控制显示与隐藏
+      clickIndex: -1 // 点击的索引
     }
   },
   methods: {
+    openEnd () {
+      // 打开结束，ref已经有值
+      this.$refs.myCarousel.setActiveItem(this.clickIndex) // 懒加载完再给index
+    },
+    // 走马灯中的图片老是显示上一次的图片
+    selectImg (index) {
+      this.clickIndex = index // 将索引赋值
+      this.dialogVisible = true // 记录索引
+      // this.$refs.myCarousel.setActiveItem(index)
+    },
     // 删除事件
     delMaterial (row) {
     // confirm也是promise格式
