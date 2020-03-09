@@ -24,8 +24,10 @@
            <!-- 放置图片 并且赋值 图片地址 -->
            <img :src="item.url" alt="">
            <el-row class="operate" type="flex"  align="middle" justify="space-around">
-              <i class="el-icon-star-on"></i>
-              <i class="el-icon-delete-solid"></i>
+           <!-- 3.7为收藏按钮和删除按钮增加事件  -->
+
+              <i @click="collectOrCancel(item)" :style="{color: item.is_collected?'red':'black'}" class="el-icon-star-on"></i>
+              <i @click="delMaterial(item)" class="el-icon-delete-solid"></i>
            </el-row>
        </el-card>
    </div>
@@ -71,6 +73,44 @@ export default {
     }
   },
   methods: {
+    // 删除事件
+    delMaterial (row) {
+    // confirm也是promise格式
+      this.$confirm('您确定要删除该图片吗？', '提示').then(() => {
+        this.$axios({
+          method: 'delete',
+          url: `/user/images/${row.id}`,
+          data: {
+            collect: !row.is_collected // true or false
+          }
+        }).then(() => {
+        // 成功就重新加载
+        // B端场景 可以拉取数据
+        // c端场景 如果删除或者修改数据 不会重新拉取数据 只会在前端修改对应的一条数据
+          this.getMaterial()
+        }).catch(() => {
+        // 失败提示消息
+          this.$message.error('操作失败')
+        })
+      })
+    },
+    // 取消护着收藏
+    collectOrCancel (row) {
+      this.$axios({
+        method: 'put',
+        url: `/user/images/${row.id}`,
+        data: {
+          collect: !row.is_collected // true or false
+        }
+      }).then(() => {
+        // 成功就重新加载
+        this.getMaterial()
+      }).catch(() => {
+        // 失败提示消息
+        this.$message.error('操作失败')
+      })
+    },
+
     //   上传
     uploadImg (params) {
       const data = new FormData()
