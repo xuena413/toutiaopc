@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card class="articles">
      <bread-crumb slot="header">
      <template slot='title'>文章列表 </template>
      </bread-crumb>
@@ -33,6 +33,25 @@
              </el-date-picker>
          </el-form-item>
      </el-form>
+     <!-- 文章主体结构 -->
+      <el-row class="total" type="flex" align="middle">
+        <span class="t">共找到1000条符合条件的内容</span>
+      </el-row>
+      <!-- 作为一个循环项 -->
+      <div class="article-item" v-for="item in 100" :key="item">
+         <div class="left" style="background:pink">
+              <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1376392996,3689681512&fm=26&gp=0.jpg" alt="">
+              <div class="info">
+                <span>标题</span>
+                 <el-tag class="tag">已发表</el-tag>
+                <span class="date">时间</span>
+              </div>
+         </div>
+          <div class="right" style="background:green">
+          <span> <i class="el-icon-edit"></i>   修改</span>
+           <span> <i class="el-icon-delete"></i> 删除</span>
+          </div>
+      </div>
   </el-card>
 </template>
 
@@ -70,6 +89,52 @@ export default {
 }
 </script>
 
-<style>
+<style lang="less" scoped>
+.articles{
+   .total {
 
+     height:50px;
+     border-bottom:1px dashed #ccc;
+
+   }
+   .article-item{
+     display: flex;
+     justify-content: space-between;
+     padding:20px 0;
+     border-bottom:1px solid #ccc;
+     .left{
+       display: flex;
+       img{
+         height: 100px;
+         width: 160px;
+         border-radius: 5px;
+       }
+       .info{
+         display: flex;
+         flex-direction: column;
+         height: 100px;
+         justify-content: space-around;
+         margin-left:10px;
+         .tag{
+           width: 60px;
+           text-align: center;
+         }
+         .date{
+           color:#999;
+           font-size:12px;
+         }
+       }
+     }
+     .right{
+      //  margin:0 auto;
+      padding-top:30px;
+       span{
+         font-size: 14px;
+         margin-right:8px;
+         cursor: pointer;
+         user-select: none;
+       }
+     }
+   }
+}
 </style>
