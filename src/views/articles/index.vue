@@ -56,6 +56,15 @@
            <span> <i class="el-icon-delete"></i> 删除</span>
           </div>
       </div>
+      <el-row type="flex" justify="center" style="height:80px" align="middel">
+<el-pagination background :current-page="page.currentPage"
+:page-size="page.pageSize"
+:total="page.total"
+   @current-change="changePage"
+ layout="prev,pager,next">
+
+</el-pagination>
+      </el-row>
   </el-card>
 </template>
 
@@ -63,11 +72,16 @@
 export default {
   data () {
     return {
-    //   value: '2'
-    // 定义表单对象
+      page: {
+        currentPage: 1,
+        pageSize: 10,
+        total: 0
+      },
+      //   value: '2'
+      // 定义表单对象
       searchForm: {
         // 文章状态，0-草稿，1-待审核，2-审核通过，3-审核失败，4-已删除，不传为全部 / 先将 5 定义成 全部
-        status: 0, // 默认为全部
+        status: 5, // 默认为全部
         channel_id: null,
         dateRange: []
       },
@@ -84,6 +98,7 @@ export default {
       // 当变化的时间会调用
       handler () {
         // alert(1111)  统一调用改变条件的方法
+        this.page.currentPage = 1 // 只要条件变化就变成第一页
         this.changeCondition()
       }
     }
@@ -94,6 +109,18 @@ export default {
   //   }, 500)
   // },
   methods: {
+    changePage (newPage) {
+      this.page.currentPage = newPage
+      // const params = {
+      //   page:this.page.currentPage,
+      //   per_page:this.page.pageSize
+      //   status: this.searchForm.status === 5 ? null : this.searchForm.status, // 5是前端虚构的
+      //   channel_id: this.searchForm.channel_id,
+      //   begin_pubdate: this.searchForm.dateRange && this.searchForm.dateRange.length ? this.searchForm.dateRange[0] : null,
+      //   end_pubdate: this.searchForm.dateRange && this.searchForm.dateRange.length > 1 ? this.searchForm.dateRange[1] : null
+      // }
+      this.changeCondition()
+    },
     // changeCondition1 () {
     //   因为此方法里面填的和下面的一样因此不需要重复写
     // },
@@ -103,6 +130,8 @@ export default {
       // 组装条件
       // alert(this.searchForm.status)
       const params = {
+        page: this.page.currentPage,
+        per_page: this.page.pageSize,
         status: this.searchForm.status === 5 ? null : this.searchForm.status, // 5是前端虚构的
         channel_id: this.searchForm.channel_id,
         begin_pubdate: this.searchForm.dateRange && this.searchForm.dateRange.length ? this.searchForm.dateRange[0] : null,
@@ -132,6 +161,7 @@ export default {
         params: params
       }).then((result) => {
         this.list = result.data.results
+        this.page.total = result.data.total_count
       })
     }
 
