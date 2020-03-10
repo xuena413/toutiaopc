@@ -55,7 +55,7 @@ layout="prev,pager,next"
 </el-pagination>
 </el-row>
 <!-- 3.7为了制造弹层  通过visible属性进行true false设置-->
-<el-dialog opened="openEnd" :visible="dialogVisible" @close="dialogVisible=false">
+<el-dialog @opened="openEnd" :visible="dialogVisible" @close="dialogVisible=false">
   <!-- 放置一个走马灯组件 -->
   <!-- ref可以获取组件实例 -->
  <el-carousel ref="myCarousel" indicator-position="outside" height="400px" >
@@ -90,11 +90,13 @@ export default {
   methods: {
     openEnd () {
       // 打开结束，ref已经有值
+      console.log(this.clickIndex)
       this.$refs.myCarousel.setActiveItem(this.clickIndex) // 懒加载完再给index
     },
     // 走马灯中的图片老是显示上一次的图片
     selectImg (index) {
       this.clickIndex = index // 将索引赋值
+
       this.dialogVisible = true // 记录索引
       // this.$refs.myCarousel.setActiveItem(index)
     },
@@ -213,6 +215,7 @@ export default {
             left:0;
             bottom:0;
             width:100%;
+
             background: #f4f5f6;
             height:30px;
             i{
