@@ -7,7 +7,7 @@
          {{value}}
      <el-form>
 <!-- {{searchForm}} {{channels}} -->
- {{searchForm}}
+ <!-- {{searchForm}} -->
          <el-form-item label="文章状态：">
              <el-radio-group v-model="searchForm.status">
                  <!-- :label是后面的值不会加引号 =======？？？？？？-->
@@ -38,13 +38,13 @@
         <span class="t">共找到1000条符合条件的内容</span>
       </el-row>
       <!-- 作为一个循环项 -->
-      <div class="article-item" v-for="item in 100" :key="item">
+      <div class="article-item" v-for="item in list" :key="item.id.toString()">
          <div class="left" style="background:pink">
-              <img src="https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=1376392996,3689681512&fm=26&gp=0.jpg" alt="">
+              <img :src="item.cover.images.length? item.cover.images[0] : defaultImg " alt="">
               <div class="info">
-                <span>标题</span>
-                 <el-tag class="tag">已发表</el-tag>
-                <span class="date">时间</span>
+                <span>{{item.title}}</span>
+                 <el-tag :type="item.status|filterType" class="tag">{{item.status | filterStatus}}</el-tag>
+                <span class="date">{{item.pubdate}}</span>
               </div>
          </div>
           <div class="right" style="background:green">
@@ -67,7 +67,10 @@ export default {
         channel_id: null,
         dateRange: []
       },
-      channels: []
+      channels: [],
+      list: [],
+      defaultImg: require('../../assets/img/timg22.jpg')
+
     }
   },
   methods: {
@@ -78,12 +81,47 @@ export default {
       }).then((result) => {
         this.channels = result.data.channels
       })
+    },
+    getArticles () {
+      this.$axios({
+        url: '/articles'
+      }).then((result) => {
+        this.list = result.data.results
+      })
     }
 
   },
   created () {
     // 获取频道接口返回的数据
     this.getChannels() // 在钩子函数中调用
+    this.getArticles()
+  },
+  filters: {
+    filterStatus (value) {
+      switch (value) {
+        case 0:
+          return '草稿'
+        case 1:
+          return '待审核'
+        case 2:
+          return '审核通过'
+        case 3:
+          return '审核失败'
+      }
+    },
+    filterType (value) {
+      switch (value) {
+        case 0:
+          return 'warning'
+        case 1:
+          return 'info'
+        case 2:
+          return ''
+        case 3:
+          return 'danger'
+      }
+    }
+
   }
 
 }
@@ -116,7 +154,7 @@ export default {
          justify-content: space-around;
          margin-left:10px;
          .tag{
-           width: 60px;
+           width: 80px;
            text-align: center;
          }
          .date{
