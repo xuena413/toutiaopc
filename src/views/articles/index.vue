@@ -9,7 +9,8 @@
 <!-- {{searchForm}} {{channels}} -->
  <!-- {{searchForm}} -->
           <el-form-item label="文章状态：">
-             <el-radio-group  v-model="searchForm.status" @change="changeCondition">
+             <!--监听方式一： <el-radio-group  v-model="searchForm.status" @change="changeCondition"> -->
+                 <el-radio-group  v-model="searchForm.status" >
                  <!-- :label是后面的值不会加引号 =======？？？？？？-->
                 <el-radio :label="5">全部</el-radio>
                 <el-radio :label="0">草稿</el-radio>
@@ -19,7 +20,8 @@
              </el-radio-group>
          </el-form-item>
          <el-form-item label="频道列表：">
-             <el-select @change="changeCondition"  placeholder="请选择频道" v-model="searchForm.channel_id">
+             <!-- <el-select @change="changeCondition"  placeholder="请选择频道" v-model="searchForm.channel_id"> -->
+                 <el-select   placeholder="请选择频道" v-model="searchForm.channel_id">
                <!-- 下拉选项 -->
                <!-- el-option是下拉的选项 label是显示值 value是绑定的值 -->
                 <el-option v-for="item in channels" :key="item.id"
@@ -28,7 +30,8 @@
              </el-select>
          </el-form-item>
          <el-form-item label="日期范围：">
-             <el-date-picker @change="changeCondition" type="daterange" value-format="yyyy-MM-dd" v-model="searchForm.dateRange">
+             <!-- <el-date-picker @change="changeCondition" type="daterange" value-format="yyyy-MM-dd" v-model="searchForm.dateRange"> -->
+<el-date-picker   type="daterange" value-format="yyyy-MM-dd" v-model="searchForm.dateRange">
 
              </el-date-picker>
          </el-form-item>
@@ -72,6 +75,16 @@ export default {
       list: [],
       defaultImg: require('../../assets/img/timg22.jpg')
 
+    }
+  },
+  watch: {
+    searchForm: {
+      deep: true, // 会深度检测
+      // 当变化的时间会调用
+      handler () {
+        // alert(1111)  统一调用改变条件的方法
+        this.changeCondition()
+      }
     }
   },
   // mounted () {
