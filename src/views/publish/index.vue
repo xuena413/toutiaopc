@@ -8,9 +8,11 @@
            <el-input v-model="publishForm.title"
            style="width:70%" placeholder="请输入您的标题"></el-input>
            </el-form-item>
-            <el-form-item v-model="publishForm.content" label="内容" prop="content">
-              <el-input type="textarea" placeholder="请输入您的内容" :rows="4" style="width:70%"></el-input>
+
+            <el-form-item  label="内容" prop="content">
+              <el-input v-model="publishForm.content" type='textarea' placeholder="请输入您的内容" :rows="4" ></el-input>
            </el-form-item>
+
             <el-form-item label="封面" prop="cover">
                <el-radio-group v-model="publishForm.cover.type">
                  <el-radio :label="1">单图</el-radio>
@@ -28,8 +30,9 @@
                  </el-select>
            </el-form-item>
            <el-form-item>
-                <el-button @click="publish" type="primary">发表</el-button>
-                <el-button>存入草稿</el-button>
+               <!-- boolean代表是不是草稿 -->
+                <el-button @click="publish(false)" type="primary">发表</el-button>
+                <el-button @click="publish(true)">存入草稿</el-button>
            </el-form-item>
        </el-form>
    </el-card>
@@ -61,9 +64,30 @@ export default {
   },
   methods: {
     // 表单的手动校验
-    publish () {
-      // this.$ref 来获取el-form实例 调用validate方法
-      this.$ref.myForm.validate()
+    publish (draft) {
+      // this.$ref 来获取el-form实例 调用validate方法 自动校验
+      // 方法一：校验通过就调用接口
+    //   this.$ref.myForm.validate(function (isOK) {
+    //     if (isOk) {
+    //     }
+    //   })
+
+      this.$refs.myForm.validate().then(() => {
+        //   进了then就是校验成功了
+        this.$axios({
+          url: '/articles', // 请求地址
+          method: 'post', // 请求方式
+          params: { draft: draft }, // query参数
+          data: this.publishForm // body参数
+
+        }).then(() => {
+          this.$message.success('操作成功')
+          // 发布成功后页面跳转
+          this.$router.push('/home/articles')
+        }).catch(() => {
+          this.$message.error('操作失败')
+        })
+      })
     },
     getChannels () {
       this.$axios({
