@@ -53,7 +53,7 @@
          </div>
           <div class="right"  >
            <span> <i class="el-icon-edit"></i>   修改</span>
-           <span> <i class="el-icon-delete"></i> 删除</span>
+           <span @click="delMaterial(item.id.toString())"> <i class="el-icon-delete"></i> 删除</span>
           </div>
       </div>
       <el-row type="flex" justify="center" style="height:80px" align="middel">
@@ -109,6 +109,22 @@ export default {
   //   }, 500)
   // },
   methods: {
+    // 删除素材方法
+    delMaterial (id) {
+      this.$confirm('您确定删除此条数据吗', '提示').then(() => {
+        this.$axios({
+          method: 'delete',
+          url: `articles/${id}` // 地址是 /articles/:target target是文章的id
+
+        }).then(() => {
+          // this.getArticles() //舍弃了当前条件因此不可
+          this.changeCondition() // 重新带条件删除
+          // this.$message.success('删除文章成功')
+        }).catch(() => {
+          this.$message.error('删除文章失败')
+        })
+      })
+    },
     changePage (newPage) {
       this.page.currentPage = newPage
       // const params = {

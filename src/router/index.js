@@ -40,6 +40,9 @@ const routes = [
         path: '/home/articles',
         // 按需加载
         component: () => import('@/views/articles')
+      }, {
+        path: 'publish',
+        component: () => import('@/views/publish')
       }
     ]
   }, { // 使用
