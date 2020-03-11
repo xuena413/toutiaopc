@@ -3,7 +3,7 @@
        <bread-crumb slot="header">
        <template slot="title">发布文章</template>
        </bread-crumb>
-       <el-form :model="publishForm" :rules="publishRules" style="margin-left:50px"  label-width="100px" >
+       <el-form ref="myForm" :model="publishForm" :rules="publishRules" style="margin-left:50px"  label-width="100px" >
            <el-form-item label="标题" prop="title">
            <el-input v-model="publishForm.title"
            style="width:70%" placeholder="请输入您的标题"></el-input>
@@ -28,7 +28,7 @@
                  </el-select>
            </el-form-item>
            <el-form-item>
-                <el-button type="primary">发表</el-button>
+                <el-button @click="publish" type="primary">发表</el-button>
                 <el-button>存入草稿</el-button>
            </el-form-item>
        </el-form>
@@ -60,6 +60,11 @@ export default {
     }
   },
   methods: {
+    // 表单的手动校验
+    publish () {
+      // this.$ref 来获取el-form实例 调用validate方法
+      this.$ref.myForm.validate()
+    },
     getChannels () {
       this.$axios({
         url: '/channels' // 获取频道数据
