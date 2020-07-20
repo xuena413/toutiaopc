@@ -52,7 +52,10 @@
               </div>
          </div>
           <div class="right"  >
-           <span> <i class="el-icon-edit"></i>   修改</span>
+            <!-- 事件绑方法的方法1 -->
+           <!-- <span @click="toPublish"> <i class="el-icon-edit"></i>   修改</span> -->
+             <!-- 事件绑方法的方法2-->
+             <span @click="$router.push(`/home/publish/${item.id.toString()}`)"> <i class="el-icon-edit"></i>   修改</span>
            <span @click="delMaterial(item.id.toString())"> <i class="el-icon-delete"></i> 删除</span>
           </div>
       </div>
@@ -109,6 +112,9 @@ export default {
   //   }, 500)
   // },
   methods: {
+    toPublish () {
+      this.$router.push('/home/publish')
+    },
     // 删除素材方法
     delMaterial (id) {
       this.$confirm('您确定删除此条数据吗', '提示').then(() => {

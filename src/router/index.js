@@ -41,8 +41,11 @@ const routes = [
         // 按需加载
         component: () => import('@/views/articles')
       }, {
-        path: 'publish',
+        path: 'publish/:articleId?',
         component: () => import('@/views/publish')
+      }, {
+        path: 'account', // 账户地址
+        component: () => import('@/views/account') // 用户组建
       }
     ]
   }, { // 使用

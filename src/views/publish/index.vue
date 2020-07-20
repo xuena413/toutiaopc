@@ -63,6 +63,13 @@ export default {
     }
   },
   methods: {
+    getArticleById (id) {
+      this.$axios({
+        url: `/articles/${id}` // 请求地址
+      }).then((result) => {
+        this.publishForm = result.data // 将数据赋值给表单数据
+      })
+    },
     // 表单的手动校验
     publish (draft) {
       // this.$ref 来获取el-form实例 调用validate方法 自动校验
@@ -73,22 +80,53 @@ export default {
     //   })
 
       this.$refs.myForm.validate().then(() => {
-        //   进了then就是校验成功了
+        const { articleId } = this.$route.params // id存在/不存在的时间执行不同的操作
         this.$axios({
-          url: '/articles', // 请求地址
-          method: 'post', // 请求方式
-          params: { draft: draft }, // query参数
-          data: this.publishForm // body参数
+          url: articleId ? `/articles/${articleId}` : '/articles',
+          method: articleId ? 'put' : 'post', // 根据场景决定用什么类型
+          params: { draft },
+          data: this.publishForm// 请求体参数
 
         }).then(() => {
-          this.$message.success('操作成功')
+          this.$message.success('修改成功')
           // 发布成功后页面跳转
           this.$router.push('/home/articles')
         }).catch(() => {
-          this.$message.error('操作失败')
+          this.$message.error('修改失败')
         })
       })
+      // if (articleId) {
+      //   this.$axios({
+      //     url: `/articles/${articleId}`,
+      //     method: 'put',
+      //     params: { draft },
+      //     data: this.publishForm// 请求体参数
+
+      //   }).then(() => {
+      //     this.$message.success('修改成功')
+      //     // 发布成功后页面跳转
+      //     this.$router.push('/home/articles')
+      //   }).catch(() => {
+      //     this.$message.error('修改失败')
+      //   })
+      // } else {
+      // //   进了then就是校验成功了
+      //   this.$axios({
+      //     url: '/articles', // 请求地址
+      //     method: 'post', // 请求方式
+      //     params: { draft: draft }, // query参数
+      //     data: this.publishForm // body参数
+
+      //   }).then(() => {
+      //     this.$message.success('发布成功')
+      //     // 发布成功后页面跳转
+      //     this.$router.push('/home/articles')
+      //   }).catch(() => {
+      //     this.$message.error('发布失败')
+      //   })
+      // }
     },
+
     getChannels () {
       this.$axios({
         url: '/channels' // 获取频道数据
@@ -96,10 +134,19 @@ export default {
         this.channels = result.data.channels
       })
     }
+
   },
+
   created () {
     this.getChannels()
+    console.log(this.$route.params)
+    const { articleId } = this.$route.params // 这里的这个解构函数不是很懂
+    // if (articleId) {
+    //   this.getArticleById(articleId)
+    // }
+    articleId && this.getArticleById(articleId) // &&前面为true才会执行后面的逻辑
   }
+
 }
 </script>
 
